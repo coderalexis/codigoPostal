@@ -20,7 +20,7 @@ Response:
       "zone_type": "Urbano",
       "settlement_type": "Colonia"
     },
-    "municipality": "015"
+    "municipality": "Cuauhtémoc"
   }
 ]
 
