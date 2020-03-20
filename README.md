@@ -1,4 +1,4 @@
-# codigoPostal
+# Codigo-Postal
 API for get ZipCode in Mexico
 
 GET https://34.94.129.221:8090/{zipcode}
