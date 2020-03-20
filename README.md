@@ -21,7 +21,7 @@ Example response:
 
 ```
 
-if the zip code is not found an http 404 code is returned and an empty json array will be returned
+if the zip code is not found an http 404 code is returned and an empty json array will be returned:
 ```json
 [
 ]
