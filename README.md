@@ -30,5 +30,11 @@ if the zip code is not found an http 404 code is returned and an empty json arra
 ```json
 [
 ]
-
 ```
+
+**project created with "Spring Tools Suite 4 4.5.1"**
+To test open the project and run locally you need to have the file CPdescarga.txt in the path "/ home /" of your server.
+
+Download it at the following link
+https://www.correosdemexico.gob.mx/SSLServicios/ConsultaCP/CodigoPostal_Exportar.aspx
+
