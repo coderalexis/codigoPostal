@@ -32,7 +32,7 @@ if the zip code is not found an http 404 code is returned and an empty json arra
 ]
 ```
 
-**project created with "Spring Tools Suite 4 4.5.1"**
+**Project created with "Spring Tools Suite 4 4.5.1"**
 To test open the project and run locally you need to have the file CPdescarga.txt in the path "/ home /" of your server.
 
 Download it at the following link
