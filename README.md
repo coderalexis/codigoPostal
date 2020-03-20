@@ -5,7 +5,9 @@ API for get ZipCode in Mexico
 
 **Example:**
 
-Request: GET http://35.199.26.233:8090/zip-codes/06140
+Request: 
+GET http://35.199.26.233:8090/zip-codes/06140
+
 Response:
 ```json
 [
