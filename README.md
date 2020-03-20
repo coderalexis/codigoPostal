@@ -1,7 +1,7 @@
 # Codigo-Postal
 API for get ZipCode in Mexico
 
-GET https://34.94.129.221:8090/{zipcode}
+# GET http://35.199.26.233:8090/zip-codes/{zipcode}
 
 Example response:
 ```json
@@ -17,6 +17,13 @@ Example response:
     },
     "municipality": "015"
   }
+]
+
+```
+
+if the zip code is not found an http 404 code is returned and an empty json array will be returned
+```json
+[
 ]
 
 ```
