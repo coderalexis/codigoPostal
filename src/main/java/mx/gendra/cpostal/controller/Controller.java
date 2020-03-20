@@ -66,7 +66,7 @@ public class Controller {
 	    			settlements.setName(words[1]);
 	    			settlements.setZone_type( (words.length<15)?words[words.length-1]:words[words.length-2] );
 	    			settlements.setSettlement_type(words[2]);
-	    			zipcode.setMunicipality(words[11]);
+	    			zipcode.setMunicipality(words[3]);
 	    			zipcode.setSettlements(settlements);
 	                
 	    			fullZipCodes.add(zipcode);
