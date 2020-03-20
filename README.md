@@ -4,6 +4,7 @@ API for get ZipCode in Mexico
 GET https://34.94.129.221:8090/{zipcode}
 
 Example response:
+```json
 [
   {
     "zip_code": "06140",
@@ -17,3 +18,5 @@ Example response:
     "municipality": "015"
   }
 ]
+
+```
