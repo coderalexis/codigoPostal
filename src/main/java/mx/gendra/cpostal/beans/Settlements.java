@@ -1,6 +1,9 @@
 package mx.gendra.cpostal.beans;
 
-public class Settlements {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Settlements implements Serializable{
 	private String name;
 	private String zone_type;
 	private String settlement_type;

@@ -7,40 +7,42 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import mx.gendra.cpostal.beans.ZipCode;
 import mx.gendra.cpostal.beans.Settlements;
 
 @RestController
-@PropertySource("classpath:application.properties")
-
 public class Controller {
 	
-	static List <ZipCode> fullZipCodes = new ArrayList<ZipCode>(); 
+	static Map<String, ZipCode> mapZipCodes = new HashMap<String, ZipCode>();
 	
 	@GetMapping(value="/zip-codes/{zipcode}", produces = "application/json")
-	public ResponseEntity<List<ZipCode>> zipcodes(@PathVariable("zipcode") String zipcode) {
-		
-		List <ZipCode> response = search(zipcode); 
-		//If not found zipcode in search, return http 404 code
-		return  (!response.isEmpty())? new ResponseEntity<List<ZipCode>>(response, HttpStatus.OK):new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ZipCode> zipcodes(@PathVariable("zipcode") String zipcode) {
+    	HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");  
+		ZipCode response = mapZipCodes.get(zipcode);
+		//If not found zipcode in search, return http 404 code and json empty {}
+		return  (response!=null) ? new ResponseEntity<ZipCode>(response,headers, HttpStatus.OK): new ResponseEntity<ZipCode>(new ZipCode(),headers,HttpStatus.NOT_FOUND);
 	}
     
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void initialConfiguration() {
 		
-	    int countLine=0;
+		int countLine=0;
 	    String filePath = "/home/CPdescarga.txt";
 	    BufferedReader buffer;
 	    String line = "";
@@ -56,21 +58,21 @@ public class Controller {
 	            	
                 	String separator = Pattern.quote("|");
 	                String[] words = line.split(separator);
-	                
 	                ZipCode zipcode = new ZipCode();
-	                
 	                zipcode.setZip_code(words[0]);
 	                zipcode.setLocality(words[4]);
 	                zipcode.setFederal_entity(words[5]);
-	    			Settlements settlements = new Settlements();
-	    			settlements.setName(words[1]);
-	    			settlements.setZone_type( (words.length<15)?words[words.length-1]:words[words.length-2] );
-	    			settlements.setSettlement_type(words[2]);
-	    			zipcode.setMunicipality(words[3]);
-	    			zipcode.setSettlements(settlements);
-	                
-	    			fullZipCodes.add(zipcode);
-	                
+                    Settlements settlements = new Settlements();
+                    settlements.setName(words[1]);
+                    settlements.setZone_type( (words.length<15)?words[words.length-1]:words[words.length-2] );
+                    settlements.setSettlement_type(words[2]);
+                    zipcode.setMunicipality(words[3]);
+                    zipcode.setSettlements(new ArrayList<Settlements>());
+                    mapZipCodes.putIfAbsent(words[0], zipcode);
+                    
+                    if(mapZipCodes.containsKey(words[0]))
+                        mapZipCodes.get(words[0]).getSettlements().add(settlements);
+                        
 	            }
 	            buffer.close();
 	        } catch (IOException e) {
@@ -79,15 +81,6 @@ public class Controller {
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
 	    } 
+		
 	}
-	
-	public static List <ZipCode> search(String codigo){
-		List <ZipCode> ZipCodesFound = new ArrayList<ZipCode>();
-        for(ZipCode postal : fullZipCodes) {
-            if(postal.getZip_code().equals(codigo)) {
-            	ZipCodesFound.add(postal);
-            }
-        }
-        return ZipCodesFound;
-    }
 }
